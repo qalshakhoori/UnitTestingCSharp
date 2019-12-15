@@ -11,10 +11,11 @@ namespace TestNinja.Mocking
     {
         //public IFileReader FileReader { get; set; } // Dependencyc injection via Properties 
         private IFileReader _fileReader;
-
-        public VideoService(IFileReader fileReader = null) // Dependencyc injection via Constructure 
+        private IVideoRepo _repo;
+        public VideoService(IFileReader fileReader = null, IVideoRepo repo = null) // Dependencyc injection via Constructure 
         {
             _fileReader = fileReader ?? new FileReader();
+            _repo = repo ?? new VideoRepo();
         }
 
         //public string ReadVideoTitle(IFileReader fileReader) // Dependencyc injection via Method Parameter
@@ -27,22 +28,19 @@ namespace TestNinja.Mocking
             return video.Title;
         }
 
+        // Execution paths
+        // return [] => ""
+        // [{},{},{}] => "1,2,3"
         public string GetUnprocessedVideosAsCsv()
         {
             var videoIds = new List<int>();
-            
-            using (var context = new VideoContext())
-            {
-                var videos = 
-                    (from video in context.Videos
-                    where !video.IsProcessed
-                    select video).ToList();
-                
-                foreach (var v in videos)
-                    videoIds.Add(v.Id);
 
-                return String.Join(",", videoIds);
-            }
+            var videos = _repo.GetUnprocessedVideos();
+            
+            foreach (var v in videos)
+                videoIds.Add(v.Id);
+
+            return String.Join(",", videoIds);  
         }
     }
 
