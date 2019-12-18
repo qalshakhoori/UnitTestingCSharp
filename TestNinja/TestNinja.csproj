@@ -59,6 +59,7 @@
     <Compile Include="Fundamentals\Reservation.cs" />
     <Compile Include="Fundamentals\Stack.cs" />
     <Compile Include="Mocking\BookingHelper.cs" />
+    <Compile Include="Mocking\BookingRepo.cs" />
     <Compile Include="Mocking\EmployeeController.cs" />
     <Compile Include="Mocking\EmployeeRepo.cs" />
     <Compile Include="Mocking\FileDownloader.cs" />
